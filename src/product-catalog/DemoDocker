@@ -1,0 +1,16 @@
+From golang:1.22-alpine AS builder
+
+Workdir /usr/src/app
+
+Copy . . 
+RUN go mod download
+
+RUN go build -o /go/bin/product-catlog ./
+
+From alpine as release
+
+Workdir /usr/src/app
+
+copy --from=builder /go/bin/product-catlog ./
+
+Expose ${PRODUCT_L}
